@@ -6,7 +6,12 @@
   --border: #dde3ef;
   --text: #1f2a3d;
   --muted: #6a748b;
-  font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    Inter,
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
   color: var(--text);
 }
 
@@ -568,6 +573,31 @@ body {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.finance-kpi-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-areas: "total outstanding overdue active queue";
+}
+
+.finance-kpi-total-revenue {
+  grid-area: total;
+}
+
+.finance-kpi-outstanding {
+  grid-area: outstanding;
+}
+
+.finance-kpi-overdue {
+  grid-area: overdue;
+}
+
+.finance-kpi-active-plans {
+  grid-area: active;
+}
+
+.finance-kpi-billing-queue {
+  grid-area: queue;
+}
+
 .stat-grid-8 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -615,6 +645,7 @@ body {
   border-radius: 0.8rem;
   overflow-x: auto;
   overflow-y: hidden;
+  position: relative;
 }
 
 .table-top-controls {
@@ -624,6 +655,13 @@ body {
   gap: 0.7rem;
   flex-wrap: wrap;
   padding: 0.55rem 0.65rem 0;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  background: #ffffff;
+  border-bottom: 1px solid #edf1f8;
+  margin-bottom: 0.1rem;
 }
 
 .table-controls-combined {
@@ -1046,14 +1084,34 @@ th {
   background: #fafbfe;
 }
 
+.hub-profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
 .hub-profile-top {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   color: #5f6981;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+.hub-nav-toggle {
+  display: none;
+  border: 1px solid #d7deeb;
+  background: #fff;
+  color: #3e4e6d;
+  border-radius: 0.45rem;
+  width: 1.6rem;
+  height: 1.6rem;
+  line-height: 1;
+  padding: 0;
+  font-size: 0.75rem;
+  place-items: center;
 }
 
 .avatar-placeholder {
@@ -1086,6 +1144,12 @@ th {
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.45;
+}
+
+.hub-profile-identity {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
 }
 
 .hub-nav {
@@ -1142,6 +1206,7 @@ th {
 .student-actions-grid {
   display: flex;
   flex-wrap: nowrap;
+  align-items: flex-start;
   gap: 0.5rem;
   overflow-x: auto;
   overflow-y: hidden;
@@ -1150,6 +1215,7 @@ th {
   border-radius: 0.9rem;
   padding: 0.8rem;
   background: #ffffff;
+  min-height: 108px;
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x proximity;
@@ -1169,6 +1235,7 @@ th {
   border: 0;
   background: transparent;
   flex: 0 0 72px;
+  min-height: 82px;
   display: grid;
   justify-items: center;
   align-content: start;
@@ -1504,7 +1571,7 @@ th {
   padding: 0.24rem 0.5rem;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 1280px) {
   .portal-shell {
     grid-template-columns: 1fr;
   }
@@ -1568,6 +1635,17 @@ th {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .finance-kpi-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-areas:
+      "total total total outstanding outstanding outstanding"
+      "overdue overdue active active queue queue";
+  }
+
+  .stat-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .finance-summary-grid,
   .ageing-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1584,15 +1662,135 @@ th {
 
   .hub-body {
     grid-template-columns: 1fr;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(300px, 1fr);
     height: 100%;
   }
 
   .hub-profile {
     border-right: 0;
     border-bottom: 1px solid var(--border);
-    max-height: 42vh;
+    max-height: min(34vh, 280px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    align-items: stretch;
+    position: relative;
+  }
+
+  .hub-profile-details {
+    flex: 0 0 44%;
+    min-width: 220px;
+    max-width: 360px;
     overflow-y: auto;
+    padding-right: 0.3rem;
+  }
+
+  .hub-student-name {
+    font-size: 0.92rem;
+  }
+
+  .hub-student-meta {
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .hub-nav-toggle {
+    display: inline-grid;
+    position: absolute;
+    top: 0.65rem;
+    right: 0.7rem;
+    z-index: 2;
+  }
+
+  .hub-profile-top {
+    justify-content: flex-start;
+    padding-right: 2rem;
+  }
+
+  .hub-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    margin-top: 0;
+    align-self: stretch;
+  }
+
+  .hub-main {
+    min-height: 300px;
+  }
+
+  .student-actions-grid {
+    min-height: 102px;
+  }
+
+  .hub-nav.is-collapsed {
+    display: none;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-profile-details {
+    flex: 1 1 auto;
+    max-width: none;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    grid-template-areas:
+      "top top"
+      "avatar identity";
+    gap: 0.42rem 0.6rem;
+    align-items: center;
+  }
+
+  .hub-profile.is-nav-collapsed {
+    padding: 0.65rem 0.75rem;
+    max-height: 150px;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-profile-top {
+    grid-area: top;
+    padding-right: 2rem;
+  }
+
+  .hub-profile.is-nav-collapsed .avatar-placeholder {
+    grid-area: avatar;
+    width: 52px;
+    height: 52px;
+    font-size: 1.1rem;
+  }
+
+  .hub-profile.is-nav-collapsed .upload-photo-button {
+    display: none;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-profile-identity {
+    grid-area: identity;
+    min-width: 0;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-student-name {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-student-meta {
+    font-size: 0.78rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-student-meta br {
+    display: none;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-profile-identity .status-badge {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.42rem;
   }
 
   .hub-metrics-grid {
@@ -1625,6 +1823,17 @@ th {
     grid-template-columns: 1fr;
   }
 
+  .finance-kpi-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-areas:
+      "total total total outstanding outstanding outstanding"
+      "overdue overdue active active queue queue";
+  }
+
+  .stat-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .finance-summary-grid,
   .ageing-grid {
     grid-template-columns: 1fr;
@@ -1648,6 +1857,37 @@ th {
 
   .hub-profile {
     max-height: 40vh;
+  }
+
+  .hub-profile-details {
+    flex-basis: 46%;
+    min-width: 180px;
+  }
+
+  .hub-student-name {
+    font-size: 0.86rem;
+  }
+
+  .hub-student-meta {
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+
+  .hub-profile.is-nav-collapsed .hub-profile-details {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+
+  .hub-profile.is-nav-collapsed {
+    max-height: 138px;
+  }
+
+  .hub-main {
+    min-height: 260px;
+  }
+
+  .student-actions-grid {
+    min-height: 98px;
   }
 
   .hub-metrics-grid {

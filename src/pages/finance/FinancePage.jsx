@@ -685,9 +685,15 @@ function FinancePage() {
         <p>Billing queue focused view with overdue propagation and payment-plan visibility.</p>
       </div>
 
-      <div className="stat-grid stat-grid-5">
+      <div className="stat-grid stat-grid-5 finance-kpi-grid">
         {financeStats.map((stat) => (
-          <StatCard key={stat.label} label={stat.label} value={stat.value} tone={stat.tone} />
+          <StatCard
+            key={stat.label}
+            label={stat.label}
+            value={stat.value}
+            tone={stat.tone}
+            className={`finance-kpi-card finance-kpi-${stat.label.toLowerCase().replace(/\s+/g, "-")}`}
+          />
         ))}
       </div>
 

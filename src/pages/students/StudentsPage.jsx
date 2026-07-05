@@ -88,6 +88,7 @@ function StudentsPage() {
   const [toastMessage, setToastMessage] = useState("");
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [activeHubTab, setActiveHubTab] = useState("Overview");
+  const [isHubNavCollapsed, setIsHubNavCollapsed] = useState(false);
 
   const mergedHubData = useMemo(() => {
     if (!selectedStudent) {
@@ -879,6 +880,7 @@ function StudentsPage() {
         onRowClick={(row) => {
           setSelectedStudent(row);
           setActiveHubTab("Overview");
+          setIsHubNavCollapsed(false);
         }}
         rowAriaLabel={(row) => `Open student hub for ${row.student}`}
       />
@@ -897,25 +899,38 @@ function StudentsPage() {
             </header>
 
             <div className="hub-body">
-              <aside className="hub-profile">
-                <div className="hub-profile-top">
-                  <span>STUDENT HUB</span>
+              <aside className={`hub-profile${isHubNavCollapsed ? " is-nav-collapsed" : ""}`}>
+                <div className="hub-profile-details">
+                  <div className="hub-profile-top">
+                    <span>STUDENT HUB</span>
+                    <button
+                      type="button"
+                      className="hub-nav-toggle"
+                      aria-label={isHubNavCollapsed ? "Expand student menu" : "Collapse student menu"}
+                      aria-expanded={!isHubNavCollapsed}
+                      onClick={() => setIsHubNavCollapsed((prev) => !prev)}
+                    >
+                      {isHubNavCollapsed ? "▼" : "▲"}
+                    </button>
+                  </div>
+                  <div className="avatar-placeholder" aria-hidden="true">
+                    👤
+                  </div>
+                  <button type="button" className="upload-photo-button">
+                    Upload photo
+                  </button>
+                  <div className="hub-profile-identity">
+                    <h3 className="hub-student-name">{mergedHubData.name}</h3>
+                    <p className="hub-student-meta">
+                      {mergedHubData.email}
+                      <br />
+                      {mergedHubData.phone}
+                    </p>
+                    <span className="status-badge status-success">{mergedHubData.portalStatus}</span>
+                  </div>
                 </div>
-                <div className="avatar-placeholder" aria-hidden="true">
-                  👤
-                </div>
-                <button type="button" className="upload-photo-button">
-                  Upload photo
-                </button>
-                <h3 className="hub-student-name">{mergedHubData.name}</h3>
-                <p className="hub-student-meta">
-                  {mergedHubData.email}
-                  <br />
-                  {mergedHubData.phone}
-                </p>
-                <span className="status-badge status-success">{mergedHubData.portalStatus}</span>
 
-                <nav className="hub-nav" aria-label="Student hub sections">
+                <nav className={`hub-nav${isHubNavCollapsed ? " is-collapsed" : ""}`} aria-label="Student hub sections">
                   {[...mergedHubData.navSections, ...hubSecondaryMenu].map((item) => (
                     <button
                       key={item}
